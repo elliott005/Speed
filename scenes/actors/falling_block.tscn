@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3 uid="uid://claej8ddofegn"]
+
+[ext_resource type="Script" path="res://scripts/falling_block.gd" id="1_n2mbd"]
+[ext_resource type="Texture2D" uid="uid://uu454eiqpyqd" path="res://assets/pixelPlatformer/white_9slice.png" id="1_reqhf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ql4gp"]
+size = Vector2(10, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vwasi"]
+size = Vector2(10, 1)
+
+[node name="FallingBlock" type="StaticBody2D"]
+script = ExtResource("1_n2mbd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-5.96046e-08, -5.96046e-08)
+scale = Vector2(3.2, 3.2)
+texture = ExtResource("1_reqhf")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_ql4gp")
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -5)
+shape = SubResource("RectangleShape2D_vwasi")
+
+[node name="DespawnTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="RespawnTimer" type="Timer" parent="."]
+wait_time = 10.0
+one_shot = true
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]
+[connection signal="timeout" from="RespawnTimer" to="." method="_on_respawn_timer_timeout"]
